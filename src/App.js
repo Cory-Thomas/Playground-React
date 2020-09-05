@@ -1,34 +1,40 @@
 import React, { useReducer } from 'react';
 import './App.css';
 
-const reducer = (state, action) => {
+const ACTIONS = {
+  INCREMENT: 'increment',
+  DECREMENT: 'decrement',
+  SAVE: 'save'
+};
+
+const countReducer = ( state, action ) => {
   switch(action.type) {
-    case 'increment' :
-      return {...state, count: state.count + 1};
-    case 'decrement' :
-      return {...state, count: state.count - 1};
-    case 'save' :
-      return {...state, save: state.count}
+    case ACTIONS.INCREMENT:
+      return { ...state, count: state.count + 1 };
+    case ACTIONS.DECREMENT:
+      return { ...state, count: state.count - 1 };
+    case ACTIONS.SAVE:
+      return { ...state, save: state.count };
     default: 
       return state;
-  }
+  };
 };
 
 function App() {
-  const [state, dispatch] = useReducer( reducer, {count: 0, save: null} )
+  const [state, dispatch] = useReducer( countReducer, { count: 0, save: null } )
 
   return (
     <>
-      <button onClick={() => dispatch( {type: 'decrement'} )}> - </button>
+      <button onClick={ () => dispatch({ type: ACTIONS.DECREMENT })}> - </button>
       <div>
-        {state.count}
+        { state.count }
       </div>
-      <button onClick={() => dispatch( {type: 'increment'} )}> + </button>
+      <button onClick={ () => dispatch({ type: ACTIONS.INCREMENT })}> + </button>
       <div>
         <div>
-          Saved State: {state.save}
+          Saved State: { state.save }
         </div>
-        <button onClick={() => dispatch( {type: "save"} )}>Save</button>
+        <button onClick={ () => dispatch({ type: ACTIONS.SAVE })}>Save</button>
       </div>
     </>
   );
