@@ -15,21 +15,13 @@ const reducer = (state, action) => {
 function App() {
   const [state, dispatch] = useReducer(reducer, {count: 0})
 
-  const increment = () => {
-    return dispatch({type: 'increment' })
-  }
-
-  const decrement = () => {
-    return dispatch({type: 'decrement'})
-  }
-
   return (
     <>
-      <button onClick={decrement}>-</button>
-      <div className="App">
+      <button onClick={() => dispatch({type: 'decrement'})}>-</button>
+      <div>
         {state.count}
       </div>
-      <button onClick={increment}>+</button>
+      <button onClick={() => dispatch({type: 'increment'})}>+</button>
     </>
   );
 };
