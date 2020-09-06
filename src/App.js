@@ -1,41 +1,79 @@
-import React, { useReducer } from 'react';
-import './App.css';
+import React, { useReducer, useState } from 'react';
 
 const ACTIONS = {
   INCREMENT: 'increment',
   DECREMENT: 'decrement',
-  SAVE: 'save'
+  SAVE: 'save',
+  ADD_TODO: 'add-todo'
 };
 
-const countReducer = ( state, action ) => {
-  switch(action.type) {
+const reducer = ( state, action ) => {
+  switch( action.type ) {
     case ACTIONS.INCREMENT:
-      return { ...state, count: state.count + 1 };
+      return { 
+        count: state.count + 1, 
+        save: state.save 
+      };
     case ACTIONS.DECREMENT:
-      return { ...state, count: state.count - 1 };
+      return { 
+        count: state.count - 1, 
+        save: state.save 
+      };
     case ACTIONS.SAVE:
-      return { ...state, save: state.count };
+      return { 
+        count: state.count, 
+        save: state.count 
+      };
+    case ACTIONS.ADD_TODO:
+      return [
+        ...state, 
+        newTodo(action.payload.name)
+      ];
     default: 
       return state;
   };
 };
 
+const newTodo = name => {
+  return { id: Date.now(), name: name, complete: false }
+}
+
 function App() {
-  const [state, dispatch] = useReducer( countReducer, { count: 0, save: null } )
+  const [state, dispatch] = useReducer( reducer, { count: 0, save: null } )
+  const [todoState, todoDispatch] = useReducer( reducer, [] )
+  const [name, setName] = useState('');
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    todoDispatch({ type: ACTIONS.ADD_TODO, payload: { name: name }})
+    setName('')
+  };
 
   return (
     <>
-      <button onClick={ () => dispatch({ type: ACTIONS.DECREMENT })}> - </button>
+      <button onClick={ () => dispatch({ type: ACTIONS.INCREMENT })}> + </button>
       <div>
         { state.count }
       </div>
-      <button onClick={ () => dispatch({ type: ACTIONS.INCREMENT })}> + </button>
+      <button onClick={ () => dispatch({ type: ACTIONS.DECREMENT })}> - </button>
       <div>
         <div>
           Saved State: { state.save }
         </div>
-        <button onClick={ () => dispatch({ type: ACTIONS.SAVE })}>Save</button>
+        <button onClick={ () => dispatch({ type: ACTIONS.SAVE })}> Save </button>
       </div>
+
+      <form onSubmit={handleSubmit} >
+        <label htmlFor='todo'> Todo: </label>
+        <input 
+          type='text' 
+          id='todo' 
+          value={name} 
+          onChange={ event => setName
+            (event.target.value)} 
+        />
+        <button type='submit'> Submit </button>
+      </form>
     </>
   );
 };
