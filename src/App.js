@@ -1,10 +1,13 @@
 import React, { useReducer, useState } from 'react';
+import Todo from './Todo';
 
-const ACTIONS = {
+export const ACTIONS = {
   INCREMENT: 'increment',
   DECREMENT: 'decrement',
   SAVE: 'save',
-  ADD_TODO: 'add-todo'
+  ADD_TODO: 'add-todo',
+  TOGGLE_TODO: 'toggle-todo',
+  DELETE_TODO: 'delete-todo'
 };
 
 const reducer = ( state, action ) => {
@@ -29,6 +32,15 @@ const reducer = ( state, action ) => {
         ...state, 
         newTodo(action.payload.name)
       ];
+    case ACTIONS.TOGGLE_TODO:
+      return state.map( todo => {
+        if ( todo.id === action.payload.id ){
+          return { ...todo, complete: !todo.complete } // reverses polarity of complete
+        }
+        return todo;
+      })
+    case ACTIONS.DELETE_TODO:
+      return state.filter( todo => todo.id !== action.payload.id )
     default: 
       return state;
   };
@@ -74,6 +86,9 @@ function App() {
         />
         <button type='submit'> Submit </button>
       </form>
+      {todoState.map( todo => {
+        return <Todo key={todo.id} todo={todo} dispatch={todoDispatch} />
+      })}
     </>
   );
 };
