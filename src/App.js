@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-// import Todo from './components/Todo';
+import Todo from './components/Todo';
 import { connect } from "react-redux";
 import { newTodo } from "./store/actions/todoActions";
 
-function App({ newTodo }) {
-  // const [state, dispatch] = useReducer( reducer, { count: 0, save: null } )
-  // const [todoState, todoDispatch] = useReducer( reducer, [] )
+const App = ({ newTodo, todos }) => {
   const [name, setName] = useState('');
 
   const handleSubmit = event => {
@@ -15,6 +13,7 @@ function App({ newTodo }) {
     console.log(name)
   };
 
+  console.log('APP C state', todos)
   return (
     <div>
       <h1>To-do Creator</h1>
@@ -35,21 +34,19 @@ function App({ newTodo }) {
       </form>
       {/* <button onClick={ () => dispatch({ type: DELETE_ALL, payload: { state }})}> Delete All Completed </button> */}
       </section>
-      {/* {
-        state.map( todo => {
-          return <Todo key={todo.id} todo={todo} dispatch={dispatch} />
+      {
+        todos.map( todo => {
+          return <Todo key={todo.id} todo={todo} />
+          // return <Todo key={todo.id} todo={todo} dispatch={dispatch} />
         })
-      } */}
+      }
     </div>
   );
 };
 
 const mapStateToProps = state => {
   return {
-    item: state.item,
-    complete: state.complete,
-    id: state.id, 
-    edit: state.edit
+    todos: state.todos
   };
 };
 
