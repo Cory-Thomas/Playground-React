@@ -1,7 +1,7 @@
 export const ADD_TODO = 'add-todo';
 export const TOGGLE_TODO = 'toggle-todo';
 export const DELETE_TODO = 'delete-todo';
-// export const DELETE_ALL = 'delete-all';
+export const DELETE_ALL = 'delete-all';
 export const UPDATE_EDIT = 'update-edit';
 export const UPDATE_ITEM = 'update-item';
 
@@ -56,6 +56,15 @@ export const deleteTodo = todo => {
     return ( dispatch ) => {
         dispatch({
             type: DELETE_TODO,
+            payload: todo
+        })
+    }
+};
+
+export const deleteAll = todo => {
+    return ( dispatch ) => {
+        dispatch({
+            type: DELETE_ALL,
             payload: todo
         })
     }

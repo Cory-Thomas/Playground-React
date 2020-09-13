@@ -2,7 +2,7 @@ import {
     ADD_TODO,
     TOGGLE_TODO,
     DELETE_TODO,
-    // DELETE_ALL,
+    DELETE_ALL,
     UPDATE_EDIT,
     UPDATE_ITEM
   } from '../actions';
@@ -59,10 +59,11 @@ export default (state = initialState, action) => {
                 return todo;
             })
           };
-        // case DELETE_ALL:
-        //     return (
-        //         state.filter( item => item.complete === false)
-        //     )
+        case DELETE_ALL:
+            return {
+              ...state,
+              todos: state.todos.filter( item => item.complete === false)
+        }
         case UPDATE_EDIT:
           return { 
             ...state, 

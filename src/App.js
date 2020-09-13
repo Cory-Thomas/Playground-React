@@ -1,9 +1,32 @@
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import Todo from './components/Todo';
 import { connect } from "react-redux";
-import { newTodo } from "./store/actions/todoActions";
+import { deleteAll, newTodo } from "./store/actions/todoActions";
 
-const App = ({ newTodo, todos }) => {
+const StyledDiv = styled.div`
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  section {
+    margin: 4% auto;
+    margin-bottom: 8%;
+  }
+  form {
+    margin-bottom: 1%;
+  }
+  input {
+    margin: 0 .75%;
+    padding: 1%;
+  }
+  button{
+        margin: 1%;
+        padding: 1%;
+        width: 200px;
+  };
+`
+
+const App = ({ newTodo, todos, deleteAll }) => {
   const [name, setName] = useState('');
 
   const handleSubmit = event => {
@@ -15,7 +38,7 @@ const App = ({ newTodo, todos }) => {
 
   console.log('APP C state', todos)
   return (
-    <div>
+    <StyledDiv>
       <h1>To-do Creator</h1>
       <section>
       <form onSubmit={handleSubmit}>
@@ -32,15 +55,14 @@ const App = ({ newTodo, todos }) => {
         />
         <button type='submit'> Add </button>
       </form>
-      {/* <button onClick={ () => dispatch({ type: DELETE_ALL, payload: { state }})}> Delete All Completed </button> */}
+      <button onClick={ () => deleteAll(todos)}> Delete All Completed </button>
       </section>
       {
         todos.map( todo => {
           return <Todo key={todo.id} todo={todo} />
-          // return <Todo key={todo.id} todo={todo} dispatch={dispatch} />
         })
       }
-    </div>
+    </StyledDiv>
   );
 };
 
@@ -50,4 +72,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect( mapStateToProps, { newTodo })( App );
+export default connect( mapStateToProps, { newTodo, deleteAll })( App );
